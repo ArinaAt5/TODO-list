@@ -1,0 +1,147 @@
+body{
+    font-family: Arial,sans-serif;
+    background-color: #e7edf0;
+    box-sizing:  border-box;
+}
+
+header{
+    text-align: left;
+    margin-bottom: 20px;
+    margin: 30px;
+    background-color: #da91bf;
+}
+
+header h1{
+    color: black;
+    font-size: 28px;
+    background-color: #da91bf;
+    padding: 15px;
+    border-radius: 5px;
+    
+}
+
+.new_task{
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    list-style-type: none;
+}
+
+.new_task h2{
+    color: #666;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.new_task input{
+    width: 40%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.new_task button{
+    padding: 10px 10px;
+    background-color: #da91bf;
+    color:white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.new_task form {
+    width: 400px;
+    height: 120px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.new_task button:hover{
+    background-color: #da91bf;
+}
+
+.desk {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.desk > div {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.desk h2 {
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.desk li {
+  background: #f9f9f9;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 4px;
+  border-left: 3px solid #ddd;
+}
+
+.delete button {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background-color: #da91bf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete button:hover {
+  background-color: #cc0096;
+}
+
+/*для колонок*/
+
+.backlog li {
+  border-left-color: #a3bfea;
+}
+.backlog h2 {
+  background-color: #a3c0ea8c;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.processing li {
+  border-left-color: #89d1e5;
+}
+.processing h2 {
+  background-color: #89d1e58a;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.done li {
+  border-left-color: #e0e872ab;
+}
+.done h2 {
+  background-color: #e0e872ab;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.delete li {
+  border-left-color: #e494f6a8;
+}
+.delete h2 {
+  background-color: #e494f6a8;
+  padding: 15px;
+  border-radius: 5px;
+}
