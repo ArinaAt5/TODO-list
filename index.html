@@ -1,53 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tairkina A.S.</title>
-	<link rel="stylesheet" href="static/styles/style.css">
-    <link rel="stylesheet" href="static/styles/normalize.css">
-</head>
-<body>
-	<header>
-		<h1> Список задач </h1>
-	</header>
-	<main>
-		<div class="new_task">
-			<form>
-			<h2> Новая задача </h2>
-			<input type="text" placeholder="Название задачи...">
-			<button> +Добавить </button>
-			</form>
-		</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Document </title>
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/normalize.css" />
+  </head>
+  <body>
+   
+    <header class="app"></header>
 
-		<div class="desk">
-		<div class ="backlog">
-			<h2> Бэклог </h2>
-			<li> Выучить JS </li>
-			<li> Выучить React</li>
-			<li> Сделать домашку </ki>
-		</div>	
+    <main>
+   
+      <section class="add-task-form"></section>
 
-		<div class="processing"> 
-			<h2> В процессе</h2>
-			<li> Выпить смузи </li>
-			<li> Попить воды </li>
-		</div>	
+      <section class="task-board"></section>
+    </main>
 
-		<div class= "done"> 
-			<h2> Готово </h2>
-			<li> Позвонить маме </li>
-			<li> Погладить кота </li>
-		</div>
-
-		<div class="delete">
-			<h2> Корзина </h2>
-			<li> Сходить погулять </li>
-			<li> Прочитать Войну и Мир </li>
-			<button> Очистить </button>
-		</div>
-
-		</div>
-	</main>
-</body>
+    <script type="module" src="src/main.js"></script>
+  </body>
 </html>
