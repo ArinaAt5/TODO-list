@@ -29,16 +29,16 @@ export const tasks =[
         title: "Создать приложение на Vue.js",
         status: "processing",
     },
-    {
-        id:"7",
-        title: "Разработать сервер на .NET(c#)",
-        status: "done",
-    },
-    {
-        id:"8",
-        title: "Настроить маршрутизацию в React",
-        status: "done",
-    },
+    // {
+    //     id:"7",
+    //     title: "Разработать сервер на .NET(c#)",
+    //     status: "done",
+    // },
+    // {
+    //     id:"8",
+    //     title: "Настроить маршрутизацию в React",
+    //     status: "done",
+    // },
     {
         id:"9",
         title: "Полить цветы",

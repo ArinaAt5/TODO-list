@@ -1,4 +1,3 @@
-
 import HeaderComponent from "./view/header-component.js";
 import FormAddTaskComponent from "./view/form-add-task-component.js";
 import TasksBoardPresenter from "./presenter/tasks-board-presenter.js";

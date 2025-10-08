@@ -1,37 +1,27 @@
-import { createElement } from "../framework/render.js";
+import { AbstractComponent } from "../framework/view/abstract-component.js";
 
-function createTaskListComponentTemplate(title) {
-  return `<div class="task-list">
-      <h2>${title}</h2>
-    </div>`;
+function createTaskListTemplate(label) {
+  return `
+    <div class="task-list">
+      <h2>${label}</h2>
+      <ul class="task-container"></ul>
+    </div>
+  `;
 }
 
-export default class TaskListComponent {
-  constructor(title) {
-    this.title = title;
+export default class TaskListComponent extends AbstractComponent {
+  #label = null;
+
+  constructor({ status, label }) {
+    super();
+    this.#label = label;
   }
 
-  getTemplate() {
-    return createTaskListComponentTemplate(this.title);
+  get template() {
+    return createTaskListTemplate(this.#label);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  getTasksContainer() {
-    // Контейнер для задач
-    if (!this.tasksContainer) {
-      this.tasksContainer = document.createElement("ul");
-      this.element.appendChild(this.tasksContainer);
-    }
-    return this.tasksContainer;
-  }
-
-  removeElement() {
-    this.element = null;
+  get tasksContainer() {
+    return this.element.querySelector(".task-container");
   }
 }

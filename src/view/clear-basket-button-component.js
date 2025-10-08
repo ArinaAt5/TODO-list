@@ -1,24 +1,11 @@
-import { createElement } from "../framework/render.js";
+import { AbstractComponent } from "../framework/view/abstract-component.js";
 
 function createClearBasketButtonTemplate() {
-  return `
-    <button class="clear-basket-btn" type="button">Очистить корзину</button>
-  `;
+  return `<button class="clear-basket-btn" type="button">Очистить корзину</button>`;
 }
 
-export default class ClearBasketButtonComponent {
-  getTemplate() {
+export default class ClearBasketButtonComponent extends AbstractComponent {
+  get template() {
     return createClearBasketButtonTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
