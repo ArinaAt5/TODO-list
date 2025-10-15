@@ -1,3 +1,4 @@
+// src/main.js
 import HeaderComponent from "./view/header-component.js";
 import FormAddTaskComponent from "./view/form-add-task-component.js";
 import TasksBoardPresenter from "./presenter/tasks-board-presenter.js";
@@ -15,7 +16,11 @@ const tasksBoardPresenter = new TasksBoardPresenter({
   tasksModel,
 });
 
+function handleNewTaskButtonClick() {
+  tasksBoardPresenter.createTask();
+}
+
 render(new HeaderComponent(), bodyContainer, RenderPosition.AFTERBEGIN);
-render(new FormAddTaskComponent(), formContainer, RenderPosition.AFTERBEGIN);
+render(new FormAddTaskComponent({ onClick: handleNewTaskButtonClick }), formContainer, RenderPosition.AFTERBEGIN);
 
 tasksBoardPresenter.init();

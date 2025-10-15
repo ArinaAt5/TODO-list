@@ -174,3 +174,12 @@ header h1 {
   font-size: 14px;
 }
 
+.clear-basket-btn:disabled {
+  background-color: #cccccc !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+}
+
+.clear-basket-btn:disabled:hover {
+  background-color: #cccccc !important;
+}
