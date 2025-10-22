@@ -19,25 +19,20 @@ export default class TasksBoardPresenter {
     this.#boardContainer = boardContainer;
     this.#tasksModel = tasksModel;
 
-    // Подписываемся на изменения модели
     this.#tasksModel.addObserver(this.#handleModelChange.bind(this));
   }
 
-  /**
-   * Удобный геттер, чтобы обращаться к массиву задач из презентера:
-   * this.tasks вместо this.#tasksModel.tasks
-   */
+
   get tasks() {
     return this.#tasksModel.tasks;
   }
 
   init() {
-    // Рендерим контейнер доски и сами списки
+
     render(this.#tasksBoardComponent, this.#boardContainer);
     this.#renderBoard();
   }
 
-  // Создать новую задачу из значения input#add-task
   createTask() {
     const input = document.querySelector("#add-task");
     const taskTitle = input ? input.value.trim() : "";
@@ -48,7 +43,7 @@ export default class TasksBoardPresenter {
     input.value = "";
   }
 
-  // --- приватные методы рендера ---
+
   #renderBoard() {
     // Перечисляем все колонки
     const STATUSES = [Status.BACKLOG, Status.PROCESSING, Status.DONE, Status.BASKET];
@@ -57,6 +52,7 @@ export default class TasksBoardPresenter {
       const listComponent = new TaskListComponent({
         status,
         label: StatusLabel[status],
+        onTaskDrop: this.#handleTaskDrop.bind(this)
       });
 
       render(listComponent, this.#tasksBoardComponent.element);
@@ -110,5 +106,9 @@ export default class TasksBoardPresenter {
   #handleModelChange() {
     this.#clearBoard();
     this.#renderBoard();
+  }
+
+  #handleTaskDrop(taskId, newStatus, beforeTaskId) {
+  this.#tasksModel.moveTask(taskId, newStatus, beforeTaskId);
   }
 }
