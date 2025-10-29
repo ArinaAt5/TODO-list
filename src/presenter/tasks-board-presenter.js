@@ -5,10 +5,7 @@ import ClearBasketButtonComponent from "../view/clear-basket-button-component.js
 import EmptyTaskListComponent from "../view/empty-task-list-component.js";
 import { render } from "../framework/render.js";
 import { Status, StatusLabel } from "../const.js";
-
-function getTasksByStatus(tasks, status) {
-  return tasks.filter((task) => task.status === status);
-}
+import LoadingView from "../view/loading-view.js";
 
 export default class TasksBoardPresenter {
   #boardContainer = null;
@@ -19,53 +16,69 @@ export default class TasksBoardPresenter {
     this.#boardContainer = boardContainer;
     this.#tasksModel = tasksModel;
 
+    // Подписка на изменения модели
     this.#tasksModel.addObserver(this.#handleModelChange.bind(this));
   }
-
 
   get tasks() {
     return this.#tasksModel.tasks;
   }
 
-  init() {
-
+  // === Инициализация ===
+  async init() {
     render(this.#tasksBoardComponent, this.#boardContainer);
+
+    const loadingView = new LoadingView();
+    render(loadingView, this.#tasksBoardComponent.element);
+
+    await this.#tasksModel.init();
+
+    // Убираем компонент загрузки
+    loadingView.element.remove();
+    loadingView.removeElement();
+
+    this.#clearBoard();
     this.#renderBoard();
   }
 
-  createTask() {
+  // === Создание новой задачи ===
+  async createTask() {
     const input = document.querySelector("#add-task");
-    const taskTitle = input ? input.value.trim() : "";
-    if (!taskTitle) {
-      return;
+    const taskTitle = input?.value.trim();
+    if (!taskTitle) return;
+
+    try {
+      await this.#tasksModel.addTask(taskTitle);
+      input.value = "";
+    } catch (err) {
+      console.error("Ошибка при создании задачи:", err);
     }
-    this.#tasksModel.addTask(taskTitle);
-    input.value = "";
   }
 
-
+  // === Отрисовка всей доски ===
   #renderBoard() {
-    // Перечисляем все колонки
     const STATUSES = [Status.BACKLOG, Status.PROCESSING, Status.DONE, Status.BASKET];
 
     STATUSES.forEach((status) => {
       const listComponent = new TaskListComponent({
         status,
         label: StatusLabel[status],
-        onTaskDrop: this.#handleTaskDrop.bind(this)
+        onTaskDrop: this.#handleTaskDrop.bind(this),
       });
 
       render(listComponent, this.#tasksBoardComponent.element);
 
-      const tasksForStatus = getTasksByStatus(this.tasks, status);
+      const tasksForStatus = this.#tasksModel.getTasksByStatus(status);
 
       if (tasksForStatus.length === 0) {
         this.#renderEmptyState(listComponent.tasksContainer);
       } else {
-        tasksForStatus.forEach((task) => this.#renderTask(listComponent.tasksContainer, task));
+        tasksForStatus.forEach((task) =>
+          this.#renderTask(listComponent.tasksContainer, task)
+        );
       }
 
-      // Для корзины добавляем кнопку очистки
+      // Добавляем кнопку очистки корзины
       if (status === Status.BASKET) {
         this.#renderClearButton(listComponent.element, tasksForStatus.length === 0);
       }
@@ -77,38 +90,45 @@ export default class TasksBoardPresenter {
     render(taskComponent, container);
   }
 
-  #renderClearButton(container, isDisabled) {
-    const clearButton = new ClearBasketButtonComponent();
-    render(clearButton, container);
-
-    // Делаем кнопку неактивной, если корзина пуста
-    clearButton.element.disabled = Boolean(isDisabled);
-
-    // Обработчик клика по кнопке "Очистить корзину"
-    clearButton.element.addEventListener("click", () => {
-      if (!clearButton.element.disabled) {
-        this.#tasksModel.clearBasket();
-      }
-    });
-  }
-
   #renderEmptyState(container) {
     const emptyComponent = new EmptyTaskListComponent();
     render(emptyComponent, container);
   }
 
-  // Очистка содержимого доски (перерисовка)
+  // === Кнопка "Очистить корзину" ===
+  #renderClearButton(container, isDisabled) {
+    const clearButton = new ClearBasketButtonComponent();
+    render(clearButton, container);
+
+    clearButton.element.disabled = Boolean(isDisabled);
+
+    clearButton.element.addEventListener("click", async () => {
+      if (clearButton.element.disabled) return;
+
+      try {
+        await this.#tasksModel.clearBasketTasks(); // исправлено
+      } catch (err) {
+        console.error("Ошибка при очистке корзины:", err);
+      }
+    });
+  }
+
+  // === Очистка и перерисовка ===
   #clearBoard() {
     this.#tasksBoardComponent.element.innerHTML = "";
   }
 
-  // Обработчик подписки на изменения модели
   #handleModelChange() {
     this.#clearBoard();
     this.#renderBoard();
   }
 
-  #handleTaskDrop(taskId, newStatus, beforeTaskId) {
-  this.#tasksModel.moveTask(taskId, newStatus, beforeTaskId);
-  }
+  // === Обновление статуса при DnD ===
+  #handleTaskDrop = async (taskId, newStatus, beforeTaskId) => {
+    try {
+      await this.#tasksModel.updateTaskStatus(taskId, newStatus);
+    } catch (err) {
+      console.error("Ошибка при обновлении статуса задачи:", err);
+    }
+  };
 }
